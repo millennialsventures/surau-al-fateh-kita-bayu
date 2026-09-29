@@ -5,23 +5,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { khairatKematianUrl, primaryNav, site } from "@/lib/site";
-
+import { site } from "@/lib/site";
 import { Container } from "./container";
 import { Icon } from "./icon";
+import { TopBar } from "./top-bar";
 
-/** Shown in the desktop bar. "Utama" is omitted because the logo is the home link. */
-const desktopHrefs = [
-  "/about",
-  "/programs",
-  "/events",
-  "/gallery",
-  "/leadership",
-  "/donate",
-  khairatKematianUrl,
+export interface HeaderProps {
+  onOpenInfaqModal?: () => void;
+}
+
+const navLinks = [
+  { href: "/", label: "Utama" },
+  { href: "/#tentang", label: "Tentang Kami" },
+  { href: "/#aktiviti", label: "Aktiviti" },
+  { href: "/#perkhidmatan", label: "Info Surau" },
+  { href: "/gallery", label: "Galeri" },
+  { href: "/contact", label: "Hubungi" },
 ];
 
-export function Header() {
+export function Header({ onOpenInfaqModal }: HeaderProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -46,138 +48,137 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-sand/90 backdrop-blur-md">
-      <Container>
-        <div className="flex h-18 items-center justify-between gap-4 py-3">
-          <Link href="/" className="flex items-center gap-3" aria-label={`${site.name} — laman hadapan`}>
-            <Image
-              src="/logo-ek-kitabayu.png"
-              alt=""
-              width={44}
-              height={44}
-              priority
-              className="size-11 shrink-0"
-            />
-            <span className="flex flex-col leading-tight">
-              <span className="font-display text-base font-semibold text-forest sm:text-lg">
-                {site.name}
+    <>
+      <TopBar />
+      <header className="sticky top-0 z-40 border-b border-hairline bg-white/95 backdrop-blur-md shadow-xs">
+        <Container>
+          <div className="flex h-20 items-center justify-between gap-4">
+            {/* Logo matching Demo132.png */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 transition-opacity hover:opacity-90"
+              aria-label={`${site.name} — laman hadapan`}
+            >
+              <Image
+                src="/logo-ek-kitabayu.png"
+                alt="Logo Surau Al-Fateh"
+                width={50}
+                height={50}
+                priority
+                className="size-12 shrink-0 object-contain"
+              />
+              <span className="flex flex-col leading-tight">
+                <span className="font-display text-lg font-bold tracking-tight text-forest sm:text-xl">
+                  AL-FATEH
+                </span>
+                <span className="text-[0.65rem] font-semibold tracking-[0.16em] text-leaf uppercase">
+                  KITA BAYU CYBERSOUTH
+                </span>
               </span>
-              <span className="text-[0.7rem] tracking-[0.12em] text-ink-soft uppercase">
-                {site.tagline}
-              </span>
-            </span>
-          </Link>
+            </Link>
 
-          <nav aria-label="Navigasi utama" className="hidden lg:block">
-            <ul className="flex items-center gap-1">
-              {desktopHrefs.map((href) => {
-                const item = primaryNav.find((entry) => entry.href === href);
-                if (!item) return null;
-                const active = pathname === href;
-                const className = `rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-brand-50 text-forest"
-                    : "text-ink-soft hover:bg-white hover:text-forest"
-                }`;
-
-                return (
-                  <li key={href}>
-                    {item.external ? (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={className}
-                      >
-                        {item.label}
-                      </a>
-                    ) : (
+            {/* Desktop Navigation */}
+            <nav aria-label="Navigasi utama" className="hidden lg:block">
+              <ul className="flex items-center gap-1.5 xl:gap-2">
+                {navLinks.map((item) => {
+                  const active = pathname === item.href;
+                  return (
+                    <li key={item.label}>
                       <Link
                         href={item.href}
-                        aria-current={active ? "page" : undefined}
-                        className={className}
+                        className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
+                          active
+                            ? "bg-brand-50 text-forest"
+                            : "text-ink/80 hover:bg-brand-50/60 hover:text-forest"
+                        }`}
                       >
                         {item.label}
                       </Link>
-                    )}
-                  </li>
-                );
-              })}
-              <li className="ml-2">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-forest px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-forest-600"
-                >
-                  <Icon name="phone" size={16} />
-                  Hubungi
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          <button
-            type="button"
-            onClick={() => setOpen((value) => !value)}
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            className="inline-flex size-11 items-center justify-center rounded-full border border-hairline bg-white text-forest lg:hidden"
-          >
-            <span className="sr-only">{open ? "Tutup menu" : "Buka menu"}</span>
-            <Icon name={open ? "close" : "menu"} size={22} />
-          </button>
-        </div>
-      </Container>
-
-      {open ? (
-        <div
-          id="mobile-nav"
-          className="border-t border-hairline bg-white lg:hidden"
-        >
-          <Container className="py-4">
-            <nav aria-label="Navigasi utama (mobile)">
-              <ul className="grid gap-1">
-                {primaryNav.map((item) => {
-                  const active = pathname === item.href;
-                  const className = `flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-medium ${
-                    active ? "bg-brand-50 text-forest" : "text-ink"
-                  }`;
-                  const body = (
-                    <>
-                      <span>{item.label}</span>
-                      <span className="text-xs text-ink-soft">{item.description}</span>
-                    </>
-                  );
-
-                  return (
-                    <li key={item.href}>
-                      {item.external ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setOpen(false)}
-                          className={className}
-                        >
-                          {body}
-                        </a>
-                      ) : (
-                        <Link
-                          href={item.href}
-                          onClick={() => setOpen(false)}
-                          aria-current={active ? "page" : undefined}
-                          className={className}
-                        >
-                          {body}
-                        </Link>
-                      )}
                     </li>
                   );
                 })}
+
+                {/* JOM BERINFAQ CTA Button */}
+                <li className="ml-3">
+                  {onOpenInfaqModal ? (
+                    <button
+                      type="button"
+                      onClick={onOpenInfaqModal}
+                      className="inline-flex items-center gap-2 rounded-full bg-forest px-5 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-md transition-all hover:bg-forest-600 hover:shadow-lg active:scale-95"
+                    >
+                      <span>JOM BERINFAQ</span>
+                      <span className="text-sm">💚</span>
+                    </button>
+                  ) : (
+                    <Link
+                      href="/donate"
+                      className="inline-flex items-center gap-2 rounded-full bg-forest px-5 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-md transition-all hover:bg-forest-600 hover:shadow-lg active:scale-95"
+                    >
+                      <span>JOM BERINFAQ</span>
+                      <span className="text-sm">💚</span>
+                    </Link>
+                  )}
+                </li>
               </ul>
             </nav>
-          </Container>
-        </div>
-      ) : null}
-    </header>
+
+            {/* Mobile menu trigger */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <Link
+                href="/donate"
+                className="inline-flex items-center gap-1.5 rounded-full bg-forest px-3.5 py-1.5 text-xs font-bold text-white uppercase"
+              >
+                <span>INFAQ</span>
+                <span className="text-xs">💚</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => setOpen((value) => !value)}
+                aria-expanded={open}
+                aria-controls="mobile-nav"
+                className="inline-flex size-10 items-center justify-center rounded-full border border-hairline bg-white text-forest shadow-xs"
+              >
+                <span className="sr-only">{open ? "Tutup menu" : "Buka menu"}</span>
+                <Icon name={open ? "close" : "menu"} size={20} />
+              </button>
+            </div>
+          </div>
+        </Container>
+
+        {/* Mobile menu drawer */}
+        {open ? (
+          <div id="mobile-nav" className="border-t border-hairline bg-white lg:hidden">
+            <Container className="py-4">
+              <nav aria-label="Navigasi utama (mobile)">
+                <ul className="grid gap-1.5">
+                  {navLinks.map((item) => (
+                    <li key={item.label}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold text-ink hover:bg-brand-50 hover:text-forest"
+                      >
+                        {item.label}
+                        <Icon name="arrow-right" size={16} className="text-leaf-400" />
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="pt-2">
+                    <Link
+                      href="/donate"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-3.5 text-center text-sm font-bold text-white uppercase shadow-md"
+                    >
+                      <span>JOM BERINFAQ</span>
+                      <span>💚</span>
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </Container>
+          </div>
+        ) : null}
+      </header>
+    </>
   );
 }

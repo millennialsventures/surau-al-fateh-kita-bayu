@@ -14,29 +14,27 @@ export const site = {
   description:
     "Surau Al-Fateh KITA ialah rumah ibadah komuniti di Bayu Cybersouth, Cyberjaya. Tempat solat berjamaah, mengaji dan berkhidmat kepada penduduk sekampung dengan santun dan terbuka.",
   shortDescription:
-    "Rumah ibadah komuniti di Bayu Cybersouth, Cyberjaya — solat berjamaah, majlis ilmah dan program komuniti.",
+    "Surau Al-Fateh KITA Bayu | Surau Komuniti di Taman Perumahan Kita Bayu, Cybersouth, Dengkil | Solat berjemaah, Majlis Ilmu dan Program komuniti penduduk KITA Bayu",
 
   locale: "ms-MY",
   lang: "ms",
   themeColor: "#004818",
 
   address: {
-    line1: "Surau Al-Fateh KITA",
-    line2: "Bayu Cybersouth",
-    line3: "Cyberjaya, Selangor",
-    postcode: "63000",
+    line1: "Surau Al-Fateh",
+    line2: "Kita Bayu Cybersouth",
+    line3: "43800 Dengkil, Selangor",
+    postcode: "43800",
     country: "Malaysia",
-    /** TODO: confirm the exact lot / section reference with the committee. */
-    landmark: "TODO: butiran lokasi",
+    landmark: "Persiaran Cybersouth Perdana, Dengkil",
   },
 
   contact: {
-    /** TODO: replace with the official WhatsApp number (E.164, digits only). */
-    whatsapp: "",
-    whatsappDisplay: "TODO: nombor WhatsApp",
-    phoneDisplay: "TODO: nombor telefon",
-    email: "",
-    emailDisplay: "TODO: alamat e-mel",
+    whatsapp: "601126002945",
+    whatsappDisplay: "011-2600 2945",
+    phoneDisplay: "011-2600 2945",
+    email: "suraualfateh@kcb.com",
+    emailDisplay: "suraualfateh@kcb.com",
   },
 
   social: {
@@ -94,8 +92,16 @@ export const primaryNav = [
   { href: "/events", label: "Aktiviti", description: "Aktiviti dan acara" },
   { href: "/programs", label: "Program", description: "Program belajar tetap" },
   { href: "/gallery", label: "Galeri", description: "Gambar aktiviti" },
-  { href: "/leadership", label: "Kepimpinan", description: "Jabatan dan jawatankuasa" },
-  { href: "/contact", label: "Hubungi", description: "Lokasi dan cara menghubungi" },
+  {
+    href: "/leadership",
+    label: "Kepimpinan",
+    description: "Jabatan dan jawatankuasa",
+  },
+  {
+    href: "/contact",
+    label: "Hubungi",
+    description: "Lokasi dan cara menghubungi",
+  },
   { href: "/donate", label: "Derma", description: "Cara menyumbangkan" },
   {
     href: khairatKematianUrl,

@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { WhatsAppFloat } from "@/components/whatsapp-float";
 import { site } from "@/lib/site";
 
 const inter = Inter({
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
 
         <Footer />
+        <WhatsAppFloat />
       </body>
     </html>
   );
