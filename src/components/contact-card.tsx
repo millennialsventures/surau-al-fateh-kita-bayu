@@ -85,18 +85,19 @@ export function ContactSection() {
 
       <ContactCard
         id="whatsapp"
-        icon="phone"
+        icon="whatsapp"
         title="WhatsApp"
         value={site.contact.whatsappDisplay}
         detail="Hubungi untuk pertanyaan umum."
-        isPlaceholder
+        href={`https://wa.me/${site.contact.whatsapp}`}
+        external
       />
 
       <ContactCard
         icon="phone"
         title="Telefon"
         value={site.contact.phoneDisplay}
-        isPlaceholder
+        href={`tel:${site.contact.whatsapp}`}
       />
 
       <ContactCard

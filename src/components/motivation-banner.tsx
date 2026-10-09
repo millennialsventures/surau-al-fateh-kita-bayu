@@ -1,3 +1,4 @@
+import { site } from "@/lib/site";
 import { Container } from "./container";
 import { Icon } from "./icon";
 
@@ -39,7 +40,7 @@ export function MotivationBanner({ onJoinClick }: MotivationBannerProps) {
               </button>
             ) : (
               <a
-                href="https://wa.me/601126002945?text=Assalamualaikum%2C%20saya%20ingin%20menyertai%20aktiviti%20Surau%20Al-Fateh"
+                href={`https://wa.me/${site.contact.whatsapp}?text=Assalamualaikum%2C%20saya%20ingin%20menyertai%20aktiviti%20Surau%20Al-Fateh`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 rounded-full bg-[#e5a823] px-6 py-3 text-xs sm:text-sm font-bold tracking-wider text-[#14201a] uppercase shadow-md transition-all hover:bg-[#d69b18] hover:shadow-lg active:scale-95"

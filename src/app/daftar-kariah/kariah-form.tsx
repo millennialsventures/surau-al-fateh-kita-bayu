@@ -119,7 +119,7 @@ export function KariahForm() {
           <ul className="list-disc list-inside space-y-1">
             <li>Setiausaha surau akan menyemak butiran mastautin pemohon.</li>
             <li>Pengesahan rasmi akan dikemas kini dalam senarai induk kariah.</li>
-            <li>Untuk sebarang urusan kecemasan atau pengesahan dokumen JAIS, sila hubungi 011-2600 2945.</li>
+            <li>Untuk sebarang urusan kecemasan atau pengesahan dokumen JAIS, sila hubungi 013-602 5123.</li>
           </ul>
         </div>
 

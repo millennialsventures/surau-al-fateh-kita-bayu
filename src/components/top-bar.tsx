@@ -58,11 +58,11 @@ export function TopBar() {
             <span className="h-3 w-px bg-white/20" aria-hidden="true" />
 
             <a
-              href="tel:01126002945"
+              href={`tel:${site.contact.whatsapp}`}
               className="inline-flex items-center gap-1.5 font-medium text-white hover:text-gold-300 transition-colors"
             >
               <Icon name="phone" size={13} className="text-gold-300" />
-              <span>{site.contact.phoneDisplay || "011-2600 2945"}</span>
+              <span>{site.contact.phoneDisplay || "013-602 5123"}</span>
             </a>
           </div>
         </div>

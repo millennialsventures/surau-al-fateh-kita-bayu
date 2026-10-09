@@ -45,7 +45,7 @@ export const servicesList: ServiceItem[] = [
       details: [
         { label: "Kaedah", value: "Borang Rasmi Dalam Talian (JAIS)" },
         { label: "Pengesahan", value: "Semakan Jawatankuasa & Setiausaha Surau" },
-        { label: "Pertanyaan", value: "011-2600 2945" },
+        { label: "Pertanyaan", value: "013-602 5123" },
       ],
     },
   },
@@ -96,7 +96,7 @@ export const servicesList: ServiceItem[] = [
       actionExternal: true,
       details: [
         { label: "Penyelaras", value: "Biro Kebajikan & Pengurusan Jenazah Surau" },
-        { label: "Hubungi", value: "011-2600 2945" },
+        { label: "Hubungi", value: "013-602 5123" },
         { label: "Portal", value: "www.e-khairat.com" },
       ],
     },
@@ -217,7 +217,7 @@ export const servicesList: ServiceItem[] = [
       details: [
         { label: "Pegawai Pengesah", value: "Pengerusi / Timbalan Pengerusi Surau" },
         { label: "Waktu Urusan", value: "Selepas solat fardu atau temujanji awal" },
-        { label: "Hubungi", value: "011-2600 2945" },
+        { label: "Hubungi", value: "013-602 5123" },
       ],
     },
   },

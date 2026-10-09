@@ -30,9 +30,9 @@ export const site = {
   },
 
   contact: {
-    whatsapp: "601126002945",
-    whatsappDisplay: "011-2600 2945",
-    phoneDisplay: "011-2600 2945",
+    whatsapp: "60136025123",
+    whatsappDisplay: "013-602 5123",
+    phoneDisplay: "013-602 5123",
     email: "suraualfateh@kcb.com",
     emailDisplay: "suraualfateh@kcb.com",
   },

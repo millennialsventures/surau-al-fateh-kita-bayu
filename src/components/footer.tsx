@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { site } from "@/lib/site";
 import { Container } from "./container";
 import { Icon } from "./icon";
 
@@ -53,10 +54,10 @@ export function Footer() {
                 <Icon name="phone" size={18} />
               </span>
               <a
-                href="tel:01126002945"
+                href={`tel:${site.contact.whatsapp}`}
                 className="hover:text-forest transition-colors font-medium text-ink"
               >
-                011-2600 2945
+                {site.contact.phoneDisplay}
               </a>
             </div>
 

@@ -1,10 +1,11 @@
+import { site } from "@/lib/site";
 import { Icon } from "./icon";
 
 export function WhatsAppFloat() {
   return (
     <aside aria-label="Bantuan WhatsApp" className="fixed bottom-6 right-6 z-40">
       <a
-        href="https://wa.me/601126002945?text=Assalamualaikum%20Surau%20Al-Fateh%2C%20saya%20ingin%20bertanya%20mengenai"
+        href={`https://wa.me/${site.contact.whatsapp}?text=Assalamualaikum%20Surau%20Al-Fateh%2C%20saya%20ingin%20bertanya%20mengenai`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Hubungi kami melalui WhatsApp"
