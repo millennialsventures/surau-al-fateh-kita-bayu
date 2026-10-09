@@ -1,0 +1,43 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Berjalan pada jam 00:00 UTC setiap 3 hari
+    # Supabase free-tier akan pause selepas 7 hari tidak aktif; selang 3 hari adalah selamat.
+    - cron: '0 0 */3 * *'
+  # Membenarkan ujian manual dari tab Actions di GitHub
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keep-alive request to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "❌ Ralat: Sila pastikan secret SUPABASE_URL dan SUPABASE_ANON_KEY telah dimasukkan dalam GitHub Repository Secrets."
+            exit 1
+          fi
+
+          # Buang trailing slash dari URL sekiranya ada
+          CLEAN_URL="${SUPABASE_URL%/}"
+
+          echo "📡 Menghantar permintaan keep-alive ke Supabase..."
+          
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X GET "${CLEAN_URL}/rest/v1/pendaftaran_kariah?select=id&limit=1" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}")
+
+          echo "Status respons HTTP: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 206 ]; then
+            echo "✅ Berjaya! Pangkalan data Supabase aktif dan telah menerima aktiviti query."
+          else
+            echo "❌ Gagal menyambung ke Supabase. Status HTTP: $HTTP_STATUS"
+            exit 1
+          fi
