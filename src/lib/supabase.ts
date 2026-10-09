@@ -7,6 +7,7 @@ export interface PendaftaranKariahRecord {
   created_at: string;
   nama_penuh: string;
   no_kp: string;
+  no_keahlian?: string | null;
   alamat_kp: string;
   alamat_semasa: string;
   no_telefon: string;
@@ -24,7 +25,7 @@ export interface PendaftaranKariahRecord {
 
 export type PermohonanKariahInput = Omit<
   PendaftaranKariahRecord,
-  "id" | "created_at" | "status" | "catatan_admin" | "tarikh_kelulusan" | "diluluskan_oleh"
+  "id" | "created_at" | "status" | "catatan_admin" | "tarikh_kelulusan" | "diluluskan_oleh" | "no_keahlian"
 >;
 
 export function getSupabaseEnv() {

@@ -118,7 +118,7 @@ export function KariahForm() {
           <p className="font-semibold text-forest">Langkah Seterusnya:</p>
           <ul className="list-disc list-inside space-y-1">
             <li>Setiausaha surau akan menyemak butiran mastautin pemohon.</li>
-            <li>Pengesahan rasmi akan dikemas kini dalam senarai induk kariah.</li>
+            <li>No. Keahlian rasmi (format <strong>SAF0001</strong>) akan dijana secara automatik sebaik sahaja permohonan diluluskan oleh pentadbir surau.</li>
             <li>Untuk sebarang urusan kecemasan atau pengesahan dokumen JAIS, sila hubungi 013-602 5123.</li>
           </ul>
         </div>

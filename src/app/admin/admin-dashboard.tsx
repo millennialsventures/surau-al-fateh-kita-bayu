@@ -61,7 +61,14 @@ export function AdminDashboard({
   function handleUpdateStatus(id: string, newStatus: StatusPendaftaran) {
     startTransition(async () => {
       const res = await updateKariahStatusAction(id, newStatus, adminNote);
-      if (res.success) {
+      if (res.success && res.record) {
+        setRecords((prev) =>
+          prev.map((r) => (r.id === id ? res.record! : r))
+        );
+        if (selectedRecord && selectedRecord.id === id) {
+          setSelectedRecord(res.record);
+        }
+      } else if (res.success) {
         setRecords((prev) =>
           prev.map((r) =>
             r.id === id
@@ -97,6 +104,7 @@ export function AdminDashboard({
   function handleExportCsv() {
     const headers = [
       "ID",
+      "No Keahlian",
       "Nama Penuh",
       "No. Kad Pengenalan",
       "Alamat Semasa (Kita Bayu)",
@@ -109,10 +117,12 @@ export function AdminDashboard({
       "Tanggungan",
       "Status Permohonan",
       "Tarikh Mohon",
+      "Tarikh Kelulusan",
     ];
 
     const rows = filteredRecords.map((r) => [
       `"${r.id}"`,
+      `"${r.no_keahlian || "-"}"`,
       `"${r.nama_penuh.replace(/"/g, '""')}"`,
       `"${r.no_kp}"`,
       `"${r.alamat_semasa.replace(/"/g, '""')}"`,
@@ -125,6 +135,7 @@ export function AdminDashboard({
       `"${r.bilangan_tanggungan}"`,
       `"${r.status}"`,
       `"${new Date(r.created_at).toLocaleDateString("ms-MY")}"`,
+      `"${r.tarikh_kelulusan ? new Date(r.tarikh_kelulusan).toLocaleDateString("ms-MY") : "-"}"`,
     ]);
 
     const csvContent =
@@ -147,6 +158,7 @@ export function AdminDashboard({
     const matchesQuery =
       !q ||
       r.nama_penuh.toLowerCase().includes(q) ||
+      (r.no_keahlian && r.no_keahlian.toLowerCase().includes(q)) ||
       r.no_kp.toLowerCase().includes(q) ||
       r.alamat_semasa.toLowerCase().includes(q) ||
       r.no_telefon.includes(q);
@@ -375,6 +387,7 @@ export function AdminDashboard({
           <table className="w-full text-left text-xs text-ink">
             <thead className="bg-sand border-b border-hairline text-ink-soft uppercase font-bold text-[0.7rem] tracking-wider">
               <tr>
+                <th className="py-3 px-4">No. Keahlian</th>
                 <th className="py-3 px-4">Nama Pemohon &amp; KP</th>
                 <th className="py-3 px-4">Alamat Kita Bayu</th>
                 <th className="py-3 px-4">No. Telefon</th>
@@ -386,13 +399,22 @@ export function AdminDashboard({
             <tbody className="divide-y divide-hairline">
               {filteredRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-ink-soft">
+                  <td colSpan={7} className="py-12 text-center text-ink-soft">
                     Tiada rekod permohonan yang sepadan dengan carian ini.
                   </td>
                 </tr>
               ) : (
                 filteredRecords.map((item) => (
                   <tr key={item.id} className="hover:bg-brand-50/40 transition-colors">
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      {item.no_keahlian ? (
+                        <span className="inline-flex items-center rounded-md bg-forest/10 px-2.5 py-1 text-xs font-mono font-bold text-forest border border-forest/20">
+                          {item.no_keahlian}
+                        </span>
+                      ) : (
+                        <span className="text-[0.75rem] text-ink-soft/60 font-mono">—</span>
+                      )}
+                    </td>
                     <td className="py-3 px-4">
                       <div className="font-bold text-forest">{item.nama_penuh}</div>
                       <div className="text-[0.7rem] text-ink-soft font-mono">{item.no_kp}</div>
@@ -496,9 +518,21 @@ export function AdminDashboard({
                 <h3 className="font-display text-lg sm:text-xl font-bold text-forest">
                   {selectedRecord.nama_penuh}
                 </h3>
-                <p className="text-xs text-ink-soft">
-                  No. Kad Pengenalan: {selectedRecord.no_kp}
-                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-1">
+                  <p className="text-xs text-ink-soft">
+                    No. Kad Pengenalan: <span className="font-mono">{selectedRecord.no_kp}</span>
+                  </p>
+                  {selectedRecord.no_keahlian ? (
+                    <span className="inline-flex items-center gap-1 rounded-md bg-forest/10 px-2 py-0.5 text-xs font-mono font-bold text-forest border border-forest/20">
+                      <Icon name="check" size={12} />
+                      No. Keahlian: {selectedRecord.no_keahlian}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-md bg-sand px-2 py-0.5 text-[0.7rem] text-ink-soft border border-hairline">
+                      No. Keahlian: Belum dijana (Perlu kelulusan)
+                    </span>
+                  )}
+                </div>
               </div>
 
               <button

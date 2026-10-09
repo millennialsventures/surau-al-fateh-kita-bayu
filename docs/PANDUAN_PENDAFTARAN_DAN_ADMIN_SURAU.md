@@ -65,22 +65,23 @@ Pada bahagian atas skrin, 4 kad ringkasan memaparkan status semasa pendaftaran s
 ### C. Carian & Penapisan Pintar
 * **Tab Penapis:** Pentadbir boleh beralih antara paparan *Semua*, *Menunggu Kelulusan*, *Diluluskan*, dan *Ditolak*.
 * **Kotak Carian Pantas:** Carian segera boleh dilakukan mengikut:
+  * No. Keahlian (contoh: `SAF0001` atau `0001`).
   * Nama pemohon.
   * Nombor Kad Pengenalan.
   * Nombor telefon.
   * Nombor rumah atau nama jalan di KITA Bayu.
 
-### D. Tindakan Semakan & Pengesahan
+### D. Tindakan Semakan, Kelulusan & Penjanaan No. Keahlian
 * Klik pada mana-mana pemohon untuk melihat paparan profil penuh.
 * **Pautan Pantas WhatsApp:** Satu klik pada butang WhatsApp akan membuka aplikasi WhatsApp terus kepada nombor pemohon berserta mesej sapaan rasmi, memudahkan pihak AJK meminta dokumen sokongan (contohnya bil elektrik/perjanjian sewa jika perlu).
 * **Catatan Admin:** Pentadbir boleh mencatat nota dalaman (contoh: *"Disahkan penyewa unit 12, dokumen lengkap"*).
 * **Keputusan Permohonan:**
-  * Butang **"Luluskan"**: Status bertukar kepada `diluluskan`, sistem merekodkan tarikh kelulusan dan nama pelulus secara automatik.
-  * Butang **"Tolak"**: Status bertukar kepada `ditolak` berserta alasan dalam catatan.
+  * Butang **"Luluskan"**: Status bertukar kepada `diluluskan`. Sistem secara automatik menjana **No. Keahlian rasmi** mengikut jujukan berterusan (format **`SAF0001`**, **`SAF0002`**, dst), merekodkan tarikh kelulusan dan nama pelulus secara automatik.
+  * Butang **"Tolak"**: Status bertukar kepada `ditolak` berserta alasan dalam catatan (tiada No. Keahlian dikeluarkan).
 
 ### E. Eksport Data ke Format Excel (CSV)
 * Terdapat butang **"Eksport CSV"** di panel pentadbir.
-* Satu klik akan memuat turun keseluruhan senarai pendaftaran yang telah ditapis ke dalam format lembaran kerja (*spreadsheet*) yang disokong oleh Microsoft Excel dan Google Sheets.
+* Satu klik akan memuat turun keseluruhan senarai pendaftaran yang telah ditapis ke dalam format lembaran kerja (*spreadsheet*) yang disokong oleh Microsoft Excel dan Google Sheets, lengkap bersama lajur **No Keahlian**, tarikh mohon, dan tarikh kelulusan.
 * Amat berguna untuk persediaan **Mesyuarat Agung Tahunan (AGM)**, bancian penduduk, serta laporan rasmi kepada **Jabatan Agama Islam Selangor (JAIS)**.
 
 ---
