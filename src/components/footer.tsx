@@ -66,10 +66,10 @@ export function Footer() {
                 <Icon name="mail" size={18} />
               </span>
               <a
-                href="mailto:suraualfateh@kcb.com"
+                href={`mailto:${site.contact.email}`}
                 className="hover:text-forest transition-colors font-medium text-ink"
               >
-                suraualfateh@kcb.com
+                {site.contact.emailDisplay}
               </a>
             </div>
           </div>

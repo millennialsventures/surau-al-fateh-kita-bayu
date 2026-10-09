@@ -1,3 +1,5 @@
+import { khairatKematianUrl } from "@/lib/site";
+
 export interface ServiceItem {
   id: string;
   title: string;
@@ -92,12 +94,12 @@ export const servicesList: ServiceItem[] = [
         "Sumbangan pampasan kewangan segera kepada waris keluarga yang berdaftar",
       ],
       actionLabel: "Layari Portal e-Khairat",
-      actionHref: "https://www.e-khairat.com/",
+      actionHref: khairatKematianUrl,
       actionExternal: true,
       details: [
         { label: "Penyelaras", value: "Biro Kebajikan & Pengurusan Jenazah Surau" },
         { label: "Hubungi", value: "013-602 5123" },
-        { label: "Portal", value: "www.e-khairat.com" },
+        { label: "Portal", value: "www.e-khairat.com/kitabayu/login" },
       ],
     },
   },

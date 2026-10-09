@@ -104,7 +104,7 @@ export function ContactSection() {
         icon="mail"
         title="E-mel"
         value={site.contact.emailDisplay}
-        isPlaceholder
+        href={`mailto:${site.contact.email}`}
       />
     </div>
   );

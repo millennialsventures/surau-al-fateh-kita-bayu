@@ -33,8 +33,8 @@ export const site = {
     whatsapp: "60136025123",
     whatsappDisplay: "013-602 5123",
     phoneDisplay: "013-602 5123",
-    email: "suraualfateh@kcb.com",
-    emailDisplay: "suraualfateh@kcb.com",
+    email: "alfatehkitabayu@gmail.com",
+    emailDisplay: "alfatehkitabayu@gmail.com",
   },
 
   social: {
@@ -83,7 +83,7 @@ export type NavItem = {
 };
 
 /** Outbound partner service, kept here so the URL is defined in one place. */
-export const khairatKematianUrl = "https://www.e-khairat.com/";
+export const khairatKematianUrl = "https://www.e-khairat.com/kitabayu/login";
 
 /** Primary navigation, used by the header, mobile menu and footer. */
 export const primaryNav = [
