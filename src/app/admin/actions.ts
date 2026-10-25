@@ -1,5 +1,6 @@
 "use server";
 
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
 import {
@@ -10,9 +11,31 @@ import {
 } from "@/lib/supabase";
 
 const SESSION_COOKIE = "surau_admin_token";
+const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 hari
 
-function getExpectedAdminPassword(): string {
-  return process.env.ADMIN_PASSWORD || "suraualfateh2026";
+/** Tiada lalai dalam production — panel ditutup sehingga ADMIN_PASSWORD ditetapkan. */
+function getExpectedAdminPassword(): string | null {
+  if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
+  return process.env.NODE_ENV === "production" ? null : "admin-dev";
+}
+
+/** Menukar ADMIN_PASSWORD akan membatalkan semua sesi sedia ada. */
+function getSessionSecret(): string | null {
+  return process.env.ADMIN_SESSION_SECRET || getExpectedAdminPassword();
+}
+
+function sign(secret: string, value: string): string {
+  return createHmac("sha256", secret).update(value).digest("base64url");
+}
+
+function safeEqual(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
+}
+
+function sha256(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 // Data contoh tempatan sekiranya Supabase belum dihubungkan
@@ -84,12 +107,26 @@ let inMemoryDemoRecords = [...fallbackDemoRecords];
 export async function isUserAdmin(): Promise<boolean> {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get(SESSION_COOKIE)?.value;
-  return Boolean(sessionToken && sessionToken === "surau-authorized-admin-session");
+  const secret = getSessionSecret();
+  if (!sessionToken || !secret) return false;
+
+  const [expiresAt, signature] = sessionToken.split(".");
+  if (!expiresAt || !signature) return false;
+  if (!safeEqual(signature, sign(secret, expiresAt))) return false;
+  return Number(expiresAt) > Date.now();
 }
 
 export async function loginAdminAction(password: string): Promise<{ success: boolean; error?: string }> {
   const expected = getExpectedAdminPassword();
-  if (password.trim() !== expected) {
+  const secret = getSessionSecret();
+  if (!expected || !secret) {
+    return {
+      success: false,
+      error: "Panel pentadbir belum dikonfigurasi. Sila hubungi pentadbir sistem.",
+    };
+  }
+
+  if (!safeEqual(sha256(password.trim()), sha256(expected))) {
     return {
       success: false,
       error: "Kata laluan pentadbir tidak tepat. Sila cuba lagi.",
@@ -97,12 +134,13 @@ export async function loginAdminAction(password: string): Promise<{ success: boo
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, "surau-authorized-admin-session", {
+  const expiresAt = String(Date.now() + SESSION_MAX_AGE * 1000);
+  cookieStore.set(SESSION_COOKIE, `${expiresAt}.${sign(secret, expiresAt)}`, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 hari
+    maxAge: SESSION_MAX_AGE,
   });
 
   return { success: true };
