@@ -2,9 +2,10 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    # Berjalan pada jam 00:00 UTC setiap 3 hari
-    # Supabase free-tier akan pause selepas 7 hari tidak aktif; selang 3 hari adalah selamat.
-    - cron: '0 0 */3 * *'
+    # Berjalan setiap hari pada jam 03:00 UTC.
+    # Supabase free-tier akan pause selepas 7 hari tidak aktif; ping harian memberi margin yang besar
+    # walaupun GitHub melewatkan atau melangkau sesetengah jadual.
+    - cron: '0 3 * * *'
   # Membenarkan ujian manual dari tab Actions di GitHub
   workflow_dispatch:
 
@@ -12,6 +13,7 @@ jobs:
   ping-supabase:
     name: Ping Supabase Database
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Send keep-alive request to Supabase
         env:
@@ -26,18 +28,35 @@ jobs:
           # Buang trailing slash dari URL sekiranya ada
           CLEAN_URL="${SUPABASE_URL%/}"
 
-          echo "📡 Menghantar permintaan keep-alive ke Supabase..."
-          
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X GET "${CLEAN_URL}/rest/v1/pendaftaran_kariah?select=id&limit=1" \
+          echo "📡 Menghantar permintaan keep-alive (RPC keep_alive_ping) ke Supabase..."
+
+          # Panggil fungsi RPC yang menulis cap masa ke jadual keep_alive (aktiviti pangkalan data sebenar)
+          CURL_EXIT=0
+          HTTP_STATUS=$(curl -sS -o response.txt -w "%{http_code}" \
+            --retry 3 --retry-delay 20 --retry-all-errors --max-time 30 \
+            -X POST "${CLEAN_URL}/rest/v1/rpc/keep_alive_ping" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}")
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{}') || CURL_EXIT=$?
+
+          if [ "$CURL_EXIT" -eq 6 ]; then
+            echo "❌ Gagal resolve host Supabase (${CLEAN_URL})."
+            echo "   Kemungkinan projek Supabase telah di-pause/dipadam (sila restore di Supabase Dashboard),"
+            echo "   atau secret SUPABASE_URL tidak betul."
+            exit 1
+          elif [ "$CURL_EXIT" -ne 0 ]; then
+            echo "❌ curl gagal dengan kod keluar $CURL_EXIT."
+            exit 1
+          fi
 
           echo "Status respons HTTP: $HTTP_STATUS"
 
-          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 206 ]; then
-            echo "✅ Berjaya! Pangkalan data Supabase aktif dan telah menerima aktiviti query."
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "✅ Berjaya! last_ping = $(cat response.txt)"
           else
-            echo "❌ Gagal menyambung ke Supabase. Status HTTP: $HTTP_STATUS"
+            echo "❌ Gagal ping Supabase. Status HTTP: $HTTP_STATUS"
+            echo "Respons: $(cat response.txt)"
+            echo "   Jika 404, pastikan migrasi 0003_keep_alive.sql telah dijalankan."
             exit 1
           fi
