@@ -5,11 +5,7 @@ import { useState, useTransition } from "react";
 
 import { Icon } from "@/components/icon";
 import type { PendaftaranKariahRecord, StatusPendaftaran } from "@/lib/supabase";
-import {
-  loginAdminAction,
-  logoutAdminAction,
-  updateKariahStatusAction,
-} from "./actions";
+import { loginAdminAction, updateKariahStatusAction } from "./actions";
 
 interface AdminDashboardProps {
   initialAuthenticated: boolean;
@@ -48,16 +44,7 @@ export function AdminDashboard({
     });
   }
 
-  // 2. Log Keluar
-  function handleLogout() {
-    startTransition(async () => {
-      await logoutAdminAction();
-      setIsAuthenticated(false);
-      window.location.reload();
-    });
-  }
-
-  // 3. Kemas kini status kelulusan ahli kariah
+  // 2. Kemas kini status kelulusan ahli kariah
   function handleUpdateStatus(id: string, newStatus: StatusPendaftaran) {
     startTransition(async () => {
       const res = await updateKariahStatusAction(id, newStatus, adminNote);
@@ -274,13 +261,6 @@ export function AdminDashboard({
             <span>Buka Borang Awam</span>
             <Icon name="arrow-right" size={14} />
           </Link>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 rounded-full bg-mist hover:bg-hairline px-4 py-2 text-xs font-semibold text-ink transition-colors"
-          >
-            <span>Log Keluar</span>
-          </button>
         </div>
       </div>
 

@@ -3,9 +3,6 @@ import { Archivo, Inter } from "next/font/google";
 
 import "./globals.css";
 
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
-import { WhatsAppFloat } from "@/components/whatsapp-float";
 import { site } from "@/lib/site";
 
 const inter = Inter({
@@ -90,14 +87,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Terus ke kandungan utama
         </a>
 
-        <Header />
-
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-
-        <Footer />
-        <WhatsAppFloat />
+        {children}
       </body>
     </html>
   );
