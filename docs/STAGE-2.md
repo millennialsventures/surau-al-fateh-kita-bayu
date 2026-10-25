@@ -361,7 +361,8 @@ Satu baris sepatutnya kelihatan: `events_published_read_only`, `select`,
 | `NEXT_PUBLIC_SUPABASE_URL` | ya | URL projek Supabase (`src/lib/supabase.ts`) |
 | `NEXT_PUBLIC_SUPABASE_ANOON_KEY` | ya | Kunci anon, hanya baca (`src/lib/supabase.ts`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | tidak | Tulisan; peringkat 3 sahaja |
-| `ADMIN_PASSWORD` | tidak | Kata laluan panel; peringkat 3 sahaja |
+| `ADMIN_PASSWORD` | tidak | Kata laluan panel; wajib dalam production (tiada lalai) |
+| `ADMIN_SESSION_SECRET` | tidak | Pilihan; rahsia tandatangan kuki sesi admin (lalai: `ADMIN_PASSWORD`) |
 
 Tetapkan pemboleh ubah yang sama dalam Vercel untuk Preview dan Production pada
 peringkat 6. Untuk pembangunan lokal, `.env.local` memadai.

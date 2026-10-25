@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { Container } from "@/components/container";
-import { PageHeader } from "@/components/page-header";
 import { Section } from "@/components/section";
 import { fetchKariahRegistrations, isUserAdmin } from "./actions";
 import { AdminDashboard } from "./admin-dashboard";
@@ -21,22 +20,14 @@ export default async function AdminPage() {
     : { records: [], isDemoMode: false };
 
   return (
-    <>
-      <PageHeader
-        eyebrow="Pentadbiran Dalaman"
-        title="Panel Pengurusan Surau"
-        description="Sistem kawalan dan kelulusan pendaftaran kariah Surau Al-Fateh, Kita Bayu Cybersouth."
-      />
-
-      <Section tone="sand" spacing="lg">
-        <Container>
-          <AdminDashboard
-            initialAuthenticated={authenticated}
-            initialRecords={records}
-            isDemoMode={isDemoMode}
-          />
-        </Container>
-      </Section>
-    </>
+    <Section tone="sand" spacing="lg">
+      <Container>
+        <AdminDashboard
+          initialAuthenticated={authenticated}
+          initialRecords={records}
+          isDemoMode={isDemoMode}
+        />
+      </Container>
+    </Section>
   );
 }
