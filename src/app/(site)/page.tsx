@@ -1,23 +1,27 @@
 import { AboutSection } from "@/components/about-section";
 import { ActivitiesSection } from "@/components/activities-section";
 import { BottomInfaqBanner } from "@/components/bottom-infaq-banner";
-import { HeroHome } from "@/components/hero-home";
+import { HeroBannerCarousel } from "@/components/hero-banner-carousel";
 import { MotivationBanner } from "@/components/motivation-banner";
 import { PrayerTimesSection } from "@/components/prayer-times-section";
 import { QuranSection } from "@/components/quran-section";
 import { ServicesSection } from "@/components/services-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
+import { fetchActiveBanners } from "@/lib/hero-banners";
 import { getTodayPrayerTimes } from "@/lib/prayer-times";
 
 export const revalidate = 1800; // Refresh every 30 minutes for prayer times
 
 export default async function HomePage() {
-  const schedule = await getTodayPrayerTimes("SGR01");
+  const [schedule, banners] = await Promise.all([
+    getTodayPrayerTimes("SGR01"),
+    fetchActiveBanners(),
+  ]);
 
   return (
     <>
       {/* 1. Hero Section */}
-      <HeroHome />
+      <HeroBannerCarousel banners={banners} />
 
       {/* 2. Motivation Banner */}
       <MotivationBanner />

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
+import { AdminNav } from "./admin-nav";
 import { isUserAdmin } from "./actions";
 import { LogoutButton } from "./logout-button";
 
@@ -43,9 +44,12 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
         </Container>
       </header>
 
-      <main id="main" className="flex-1 bg-sand">
-        {children}
-      </main>
+      <div className="flex-1 bg-sand lg:flex">
+        <AdminNav authenticated={authenticated} />
+        <main id="main" className="min-w-0 flex-1">
+          {children}
+        </main>
+      </div>
     </>
   );
 }

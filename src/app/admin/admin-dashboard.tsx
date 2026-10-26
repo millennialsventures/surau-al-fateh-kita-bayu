@@ -21,6 +21,7 @@ export function AdminDashboard({
   const [isAuthenticated, setIsAuthenticated] = useState(initialAuthenticated);
   const [records, setRecords] = useState<PendaftaranKariahRecord[]>(initialRecords);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"semua" | StatusPendaftaran>("semua");
   const [searchQuery, setSearchQuery] = useState("");
@@ -192,15 +193,25 @@ export function AdminDashboard({
             >
               Kata Laluan Pentadbir
             </label>
-            <input
-              type="password"
-              id="admin_pass"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan kata laluan"
-              className="w-full rounded-xl border border-hairline bg-white px-4 py-2.5 text-sm text-ink focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="admin_pass"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Masukkan kata laluan"
+                className="w-full rounded-xl border border-hairline bg-white px-4 py-2.5 pr-11 text-sm text-ink focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Sembunyikan kata laluan" : "Papar kata laluan"}
+                className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-ink-soft hover:text-forest"
+              >
+                <Icon name={showPassword ? "eye-off" : "eye"} size={18} />
+              </button>
+            </div>
           </div>
 
           <button
